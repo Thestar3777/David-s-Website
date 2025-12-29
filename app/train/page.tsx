@@ -197,6 +197,7 @@ export default function TrainPage() {
         </div>
       </section>
 
+{/*
       <motion.section 
         id='bookSession'
         initial={{ opacity: 0, y: 30 }}
@@ -302,6 +303,7 @@ export default function TrainPage() {
           </form>
         </div>
       </motion.section>
+      */}
 
       <Footer />
     </div>

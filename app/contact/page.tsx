@@ -129,6 +129,8 @@ export default function ContactPage() {
         </div>
       </motion.section>
 
+      {/*
+
       <section className="border-t border-gray-800/50 px-6 md:px-8 py-24 md:py-32 lg:py-40">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20 xl:gap-24">
           <motion.div
@@ -276,6 +278,7 @@ export default function ContactPage() {
               </motion.button>
             </form>
           </motion.div>
+        */}
 
           <motion.div
             initial={{ opacity: 0, x: 40 }}

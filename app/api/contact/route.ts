@@ -26,8 +26,8 @@ export async function POST(req: NextRequest) {
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'Contact Form <onboarding@resend.dev>', // You'll need to update this with your verified domain
-      to: [process.env.CONTACT_EMAIL || 'your-email@example.com'], // Add your email to .env
+      from: 'Contact Form <anything>@onteeantof.resend.app', // verified domain
+      to: [process.env.CONTACT_EMAIL || 'davidhervas777@gmail.com'],
       subject: subject,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
