@@ -131,7 +131,7 @@ export default function ContactPage() {
 
       {/*
 
-      <section className="border-t border-gray-800/50 px-6 md:px-8 py-24 md:py-32 lg:py-40">
+      <section className="border-t border-gray-800/50 px-6  ``md:px-8 py-24 md:py-32 lg:py-40">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20 xl:gap-24">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -278,7 +278,9 @@ export default function ContactPage() {
               </motion.button>
             </form>
           </motion.div>
+          </section>
         */}
+        
 
           <motion.div
             initial={{ opacity: 0, x: 40 }}
@@ -287,7 +289,7 @@ export default function ContactPage() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-14 lg:space-y-16"
           >
-            <div>
+            <div className="px-6 md:px-10 lg:px-16">
               <h2 className="mb-10 md:mb-12 text-4xl font-black uppercase tracking-tighter md:text-5xl lg:text-6xl">
                 Press Kit
               </h2>
@@ -330,7 +332,7 @@ export default function ContactPage() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                  <h3 className="mb-6 text-2xl font-black uppercase tracking-tighter text-gray-400">
+                  <h3 className="mb-6 text-2xl font-black uppercase tracking-tighter text-white-400">
                     Connect :
                   </h3>
                   <div className="space-y-5">
@@ -376,9 +378,5 @@ export default function ContactPage() {
             </div>
           </motion.div>
         </div>
-      </section>
-
-      <Footer />
-    </div>
   );
 }
