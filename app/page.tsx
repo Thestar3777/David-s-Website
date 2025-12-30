@@ -1,36 +1,42 @@
 'use client';
 
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { motion, useScroll, useTransform } from 'framer-motion';
  import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
- import Footer from './components/Footer';
+ import dynamic from 'next/dynamic';
+
+const Footer = dynamic(() => import('./components/Footer'), {
+  loading: () => null,
+});
  
  
-const StickyCard = ({ 
-  children, 
+const StickyCard = ({
+  children,
   className,
-  isMobile 
-}: { 
-  children: React.ReactNode; 
+  isMobile
+}: {
+  children: React.ReactNode;
   className?: string;
   isMobile: boolean;
 }) => {
   const ref = useRef(null);
+  // Disable expensive scroll animations on mobile
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 100px", "end start"]
   });
-  
+
   const scale = useTransform(scrollYProgress, [0, 1], [1, isMobile ? 0.9 : 1]);
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={isMobile ? { opacity: 1 } : { opacity: 0, y: 40 }}
+      whileInView={isMobile ? { opacity: 1 } : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      style={{ scale }}
+      transition={isMobile ? { duration: 0 } : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      style={isMobile ? {} : { scale }}
       className={className}
     >
       {children}
@@ -63,6 +69,7 @@ export default function Home() {
             loop
             muted
             playsInline
+            preload="metadata"
             poster="/hero-poster.jpg"
             // ADD !h-full here to force it to stretch to the bottom
             className="absolute inset-0 w-full !h-full object-cover object-center lg:object-[60%_center]"
@@ -148,10 +155,10 @@ export default function Home() {
       </section>
 
       <motion.section
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-100px' }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="mx-auto max-w-5xl px-6 md:px-8 py-12 md:py-20"
       >
         <h2 className="mb-16 md:mb-20 pb-10 text-4xl font-black uppercase tracking-tighter md:text-5xl lg:text-6xl text-center">
@@ -221,7 +228,8 @@ export default function Home() {
                 alt="David in combat training"
                 fill
                 className="absolute inset-0 w-full h-full object-cover object-top"
-                priority
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
 
@@ -248,6 +256,8 @@ export default function Home() {
                 alt="David behind the camera"
                 fill
                 className="object-cover"
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
 
@@ -274,6 +284,8 @@ export default function Home() {
                 alt="David in documentary setting"
                 fill
                 className="object-cover"
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
 
@@ -292,10 +304,10 @@ export default function Home() {
 
       {/* Follow Me Section */}
       <motion.section
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-100px' }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="border-t border-gray-900 px-6 md:px-8 py-24 md:py-32 lg:py-40"
       >
         <div className="mx-auto max-w-4xl text-center">
@@ -387,6 +399,7 @@ export default function Home() {
 
       {/* Footer */}
       <Footer />
+      <SpeedInsights />
     </div>
   );
 }

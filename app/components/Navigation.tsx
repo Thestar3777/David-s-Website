@@ -46,6 +46,7 @@ export default function Navigation() {
                 alt="David Hervas Pardo Logo"
                 fill
                 className="object-cover"
+                sizes="52px"
                 priority
               />
             </div>
