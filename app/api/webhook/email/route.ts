@@ -1,42 +1,37 @@
-import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   try {
-    const payload = await req.text(); // Get raw body for verification
-    const sigId = req.headers.get('svix-id');
-    const sigTimestamp = req.headers.get('svix-timestamp');
-    const sigSignature = req.headers.get('svix-signature');
+    // Parse the webhook payload
+    const body = await req.json();
 
-    // 1. Verify the webhook signature (Security Best Practice)
-    if (!sigId || !sigTimestamp || !sigSignature) {
-      return NextResponse.json({ error: 'Missing headers' }, { status: 400 });
+    // Verify webhook secret (optional but recommended)
+    const webhookSecret = req.headers.get('x-resend-webhook-secret');
+
+    if (process.env.RESEND_WEBHOOK_SECRET && webhookSecret !== process.env.RESEND_WEBHOOK_SECRET) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const result = resend.webhooks.verify({
-      payload,
-      headers: {
-        'svix-id': sigId,
-        'svix-timestamp': sigTimestamp,
-        'svix-signature': sigSignature,
-      },
-      secret: process.env.RESEND_WEBHOOK_SECRET!,
-    });
+    // Handle the webhook event
+    const { type, data } = body;
 
-    // 2. Handle the "email.received" event
-    if (result.type === 'email.received') {
-      const emailData = result.data;
-      console.log('New email from:', emailData.from);
-      console.log('Subject:', emailData.subject);
-      console.log('Content:', emailData.text || emailData.html);
-      
-      // Add your logic here (e.g., save to database, forward to Slack)
+    if (type === 'email.sent') {
+      console.log('Email sent successfully:', data);
+    } else if (type === 'email.delivered') {
+      console.log('Email delivered:', data);
+    } else if (type === 'email.bounced') {
+      console.log('Email bounced:', data);
+    } else if (type === 'email.complained') {
+      console.log('Email complained:', data);
+    } else if (type === 'email.opened') {
+      console.log('Email opened:', data);
+    } else if (type === 'email.clicked') {
+      console.log('Email link clicked:', data);
     }
 
     return NextResponse.json({ received: true }, { status: 200 });
   } catch (error) {
+    console.error('Webhook error:', error);
     return NextResponse.json({ error: 'Webhook failed' }, { status: 400 });
   }
 }
