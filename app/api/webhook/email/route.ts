@@ -5,7 +5,6 @@ export async function POST(req: NextRequest) {
     // Parse the webhook payload
     const body = await req.json();
 
-    // Verify webhook secret (optional but recommended)
     const webhookSecret = req.headers.get('x-resend-webhook-secret');
 
     if (process.env.RESEND_WEBHOOK_SECRET && webhookSecret !== process.env.RESEND_WEBHOOK_SECRET) {
